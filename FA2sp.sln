@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FA2sp", "FA2sp.vcxproj", "{EC64EBAC-6CFA-402D-9E12-DC00447627EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		O2_enabled|x86 = O2_enabled|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC64EBAC-6CFA-402D-9E12-DC00447627EA}.O2_enabled|x86.ActiveCfg = O2_enabled|Win32
+		{EC64EBAC-6CFA-402D-9E12-DC00447627EA}.O2_enabled|x86.Build.0 = O2_enabled|Win32
+		{EC64EBAC-6CFA-402D-9E12-DC00447627EA}.Release|x86.ActiveCfg = Release|Win32
+		{EC64EBAC-6CFA-402D-9E12-DC00447627EA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94B7B5A3-DB67-4BCC-9C50-AC8CCFEA85C0}
+	EndGlobalSection
+EndGlobal
