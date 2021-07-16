@@ -1,0 +1,7 @@
+*.aps
+/Debug
+/.vs
+/Release
+/SyringeDebug
+/SyringeRelease
+/O2_enabled
