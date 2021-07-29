@@ -176,87 +176,87 @@ void ObjectBrowserControlExt::Redraw_Owner()
     bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
     if (bMultiOnly)
     {
-		if (doc.GetSection("Houses"))
-		{
-			MultimapHelper mmhmap;
-			mmhmap.AddINI(&doc);
-			auto& mphouses = mmhmap.ParseIndicies("Houses", true);
-			for (size_t i = 0, sz = mphouses.size(); i < sz; ++i)
-				this->InsertString(mphouses[i], Const_House + i, hOwner);
-		}
-		else
-		{
-			auto& fadata = GlobalVars::INIFiles::FAData();
-			if (auto entities = fadata.GetSection("MPChangeOwners"))
-			{
-				for (auto& x : entities->EntitiesDictionary)
-				{
-					CString text;
-					if (!STDHelpers::IsNullOrEmpty(x.first) && !STDHelpers::IsNullOrEmpty(x.second))
-					{
-						int houseindex = atoi(x.first);
-						text.Format("%s", x.second);
-						STDHelpers::TrimString(text);
-						this->InsertString(text, Const_House + houseindex, hOwner);
-					}
-				}
-			}
-			else
-			{
-				MultimapHelper mmhrules;
-				mmhrules.AddINI(&GlobalVars::INIFiles::Rules());
-				auto& section = mmhrules.ParseIndicies("Houses", true);
-				for (size_t i = 0, sz = section.size(); i < sz; ++i)
-					this->InsertString(section[i], Const_House + i, hOwner);
-			}
-		}
+        if (doc.GetSection("Houses"))
+        {
+            MultimapHelper mmhmap;
+            mmhmap.AddINI(&doc);
+            auto& mphouses = mmhmap.ParseIndicies("Houses", true);
+            for (size_t i = 0, sz = mphouses.size(); i < sz; ++i)
+                this->InsertString(mphouses[i], Const_House + i, hOwner);
+        }
+        else
+        {
+            auto& fadata = GlobalVars::INIFiles::FAData();
+            if (auto entities = fadata.GetSection("MPChangeOwners"))
+            {
+                for (auto& x : entities->EntitiesDictionary)
+                {
+                    CString text;
+                    if (!STDHelpers::IsNullOrEmpty(x.first) && !STDHelpers::IsNullOrEmpty(x.second))
+                    {
+                        int houseindex = atoi(x.first);
+                        text.Format("%s", x.second);
+                        STDHelpers::TrimString(text);
+                        this->InsertString(text, Const_House + houseindex, hOwner);
+                    }
+                }
+            }
+            else
+            {
+                MultimapHelper mmhrules;
+                mmhrules.AddINI(&GlobalVars::INIFiles::Rules());
+                auto& section = mmhrules.ParseIndicies("Houses", true);
+                for (size_t i = 0, sz = section.size(); i < sz; ++i)
+                    this->InsertString(section[i], Const_House + i, hOwner);
+            }
+        }
     }
     else
     {
         if (!ExtConfigs::SPChangeOwnerUseRulesAlso)
-		{
-		    MultimapHelper mmhmaponly;
+        {
+            MultimapHelper mmhmaponly;
             mmhmaponly.AddINI(&doc);
-			auto& section = mmhmaponly.ParseIndicies("Houses", true);
-			STDHelpers::TrimString(ExtConfigs::SPChangeOwnerExcludeStartWith);
-			int j = 0;
-			for (size_t i = 0, sz = section.size(); i < sz; ++i)
-			{
-				STDHelpers::TrimString(section[i]);
-				if (!STDHelpers::IsNullOrEmpty(ExtConfigs::SPChangeOwnerExcludeStartWith) &&
-					STDHelpers::StartsWith(section[i], ExtConfigs::SPChangeOwnerExcludeStartWith))
-				{
-					j++;
-				}
-				else
-				{
-					this->InsertString(section[i], Const_House + j, hOwner);
-					j++;
-				}
-			}
-		}
+            auto& section = mmhmaponly.ParseIndicies("Houses", true);
+            STDHelpers::TrimString(ExtConfigs::SPChangeOwnerExcludeStartWith);
+            int j = 0;
+            for (size_t i = 0, sz = section.size(); i < sz; ++i)
+            {
+                STDHelpers::TrimString(section[i]);
+                if (!STDHelpers::IsNullOrEmpty(ExtConfigs::SPChangeOwnerExcludeStartWith) &&
+                    STDHelpers::StartsWith(section[i], ExtConfigs::SPChangeOwnerExcludeStartWith))
+                {
+                    j++;
+                }
+                else
+                {
+                    this->InsertString(section[i], Const_House + j, hOwner);
+                    j++;
+                }
+            }
+        }
         else
         {
-		    MultimapHelper mmhhouses;
+            MultimapHelper mmhhouses;
             mmhhouses.AddINI(&GlobalVars::INIFiles::Rules());
             mmhhouses.AddINI(&doc);
-			auto& section = mmhhouses.ParseIndicies("Houses", true);
-			STDHelpers::TrimString(ExtConfigs::SPChangeOwnerExcludeStartWith);
-			int j = 0;
-			for (size_t i = 0, sz = section.size(); i < sz; ++i)
-			{
-				STDHelpers::TrimString(section[i]);
-				if (!STDHelpers::IsNullOrEmpty(ExtConfigs::SPChangeOwnerExcludeStartWith) &&
-					STDHelpers::StartsWith(section[i], ExtConfigs::SPChangeOwnerExcludeStartWith))
-				{
-					j++;
-				}
-				else
-				{
-					this->InsertString(section[i], Const_House + j, hOwner);
-					j++;
-				}
-			}
+            auto& section = mmhhouses.ParseIndicies("Houses", true);
+            STDHelpers::TrimString(ExtConfigs::SPChangeOwnerExcludeStartWith);
+            int j = 0;
+            for (size_t i = 0, sz = section.size(); i < sz; ++i)
+            {
+                STDHelpers::TrimString(section[i]);
+                if (!STDHelpers::IsNullOrEmpty(ExtConfigs::SPChangeOwnerExcludeStartWith) &&
+                    STDHelpers::StartsWith(section[i], ExtConfigs::SPChangeOwnerExcludeStartWith))
+                {
+                    j++;
+                }
+                else
+                {
+                    this->InsertString(section[i], Const_House + j, hOwner);
+                    j++;
+                }
+            }
         }
     }
 }
