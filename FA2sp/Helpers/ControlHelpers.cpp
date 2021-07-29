@@ -1,3 +1,5 @@
+#include "../FA2sp.h"
+
 #include "ControlHelpers.h"
 #include "Translations.h"
 #include "STDHelpers.h"
@@ -18,8 +20,11 @@ namespace ControlHelpers
 
         auto& doc = GlobalVars::INIFiles::CurrentDocument();
         MultimapHelper mmh;
-        mmh.AddINI(&doc);
-
+        bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
+        if (bMultiOnly)
+            mmh.AddINI(&GlobalVars::INIFiles::Rules());
+        else
+            mmh.AddINI(&doc);
         auto& entries = mmh.ParseIndicies("Houses", true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
@@ -30,33 +35,24 @@ namespace ControlHelpers
                 buffer = entries[i];
             combobox.SetItemData(combobox.AddString(buffer), i);
         }
+
+        if (bMultiOnly && ExtConfigs::UseMPSpawnHouses)
+        {
+            CString spawn;
+            for (int j = 0; j < 8 ; j++)
+            {
+                if (bShowIndex)
+                    spawn.Format("%u - Multiplayer %u", ExtConfigs::MPSpawnStartIndex + j, j + 1);
+                else
+                    spawn.Format("Multiplayer %u", j + 1);
+                combobox.SetItemData(combobox.AddString(spawn), ExtConfigs::MPSpawnStartIndex + j);
+            }
+        }
     }
 
     void ComboBox::LoadCountries(CComboBox& combobox, bool bShowIndex)
     {
         ComboBox::Clear(combobox);
-        auto& doc = GlobalVars::INIFiles::CurrentDocument();
-        bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
-        if (bMultiOnly)
-        {
-            ComboBox::LoadHouses(combobox, bShowIndex);
-            return;
-        }
-
-        MultimapHelper mmh;
-        mmh.AddINI(&GlobalVars::INIFiles::Rules());
-        mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
-
-        auto& entries = mmh.ParseIndicies("Countries", true);
-        CString buffer;
-        for (size_t i = 0, sz = entries.size(); i < sz; ++i)
-        {
-            if (bShowIndex)
-                buffer.Format("%u - %s", i, entries[i]);
-            else
-                buffer = entries[i];
-            combobox.SetItemData(combobox.AddString(buffer), i);
-        }
     }
 
     void ComboBox::LoadGenericList(CComboBox& combobox, const char* pSection, bool bShowRegName, bool bShowName, bool bShowIndex)

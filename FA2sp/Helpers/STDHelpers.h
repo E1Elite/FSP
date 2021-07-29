@@ -73,6 +73,18 @@ public:
         return s.find(q) != std::string::npos;
     }
 
+    static bool StartsWith(const char* str, const char* query, bool bIgnoreCase = false)
+    {
+        std::string s = str;
+        std::string q = query;
+        if (bIgnoreCase)
+        {
+            std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+            std::transform(q.begin(), q.end(), q.begin(), ::tolower);
+        }
+        return s.find(q) == 0;
+    }
+
     // TODO : LCA to optimize the efficiency
     static ppmfc::CString GetAvailableIndex(INIClass& ini)
     {

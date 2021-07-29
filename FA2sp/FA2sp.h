@@ -41,5 +41,9 @@ public:
     static int Waypoint_Color;
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
+    static bool UseMPSpawnHouses;
+    static int MPSpawnStartIndex;
+    static bool SPChangeOwnerUseRulesAlso;
+    static CString SPChangeOwnerExcludeStartWith;
 };
 

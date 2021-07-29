@@ -40,7 +40,7 @@ public:
         static constexpr reference<INIClass, 0x7DC410> const FALanguage{}; // FALanguage.ini  //fs  FSLanguage
         // static constexpr reference<INIClass, 0x71BB08> const UINameHolder{}; // Holds Stringtable //fs
         static constexpr reference<INIClass, 0x79BB90> const CurrentDocument{}; // Current map file, without update  //fs 
-        static constexpr reference<INIClass, 0x7DCF4C> const CurrentTheater{}; // Current theater file //fs
+        static constexpr reference<INIClass*, 0x7DCF4C> const CurrentTheater{}; // Current theater file //fs
     };
 
 };

@@ -242,6 +242,7 @@
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
     <ClCompile Include="FA2sp\RunTime.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.FileNames.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Performance.cpp" />

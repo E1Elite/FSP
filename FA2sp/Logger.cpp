@@ -1,6 +1,8 @@
 #include "Logger.h"
 #include <windows.h>
 #include <share.h>
+#include <stdio.h>
+#include <fstream>
 
 char Logger::pTime[24];
 char Logger::pBuffer[0x800];
@@ -8,7 +10,16 @@ FILE* Logger::pFile;
 bool Logger::bInitialized;
 
 void Logger::Initialize() {
-	pFile = _fsopen("FSP.log", "w", _SH_DENYWR);
+    int filesize = 0;
+    std::ifstream fspfile ("FSP.log", std::ifstream::ate | std::ifstream::binary);
+    if (fspfile)
+    {
+        filesize = fspfile.tellg();
+        fspfile.close();
+        if (filesize > 204800)
+            remove("FSP.log");
+    }
+    pFile = _fsopen("FSP.log", "a", _SH_DENYNO);
 	bInitialized = pFile;
 	Time(pTime);
 	Raw("FSP Logger Initializing at %s.\n", pTime);

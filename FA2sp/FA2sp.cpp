@@ -28,6 +28,10 @@ int ExtConfigs::CursorSelectionBound_HeightColor;
 int ExtConfigs::Waypoint_Color;
 bool ExtConfigs::Waypoint_Background;
 int ExtConfigs::Waypoint_Background_Color;
+bool ExtConfigs::UseMPSpawnHouses;
+int ExtConfigs::MPSpawnStartIndex;
+bool ExtConfigs::SPChangeOwnerUseRulesAlso;
+CString ExtConfigs::SPChangeOwnerExcludeStartWith;
 
 
 DEFINE_HOOK(41F52B, FAData_Config_Init, 5) //fs
@@ -67,6 +71,11 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::Waypoint_Color = fadata.GetColor("ExtConfigs", "Waypoint.Color", 0xFF0000);
 	ExtConfigs::Waypoint_Background = fadata.GetBool("ExtConfigs", "Waypoint.Background");
 	ExtConfigs::Waypoint_Background_Color = fadata.GetColor("ExtConfigs", "Waypoint.Background.Color", 0xFFFFFF);
+
+	ExtConfigs::UseMPSpawnHouses = fadata.GetBool("ExtConfigs", "UseMPSpawnHouses");
+	ExtConfigs::MPSpawnStartIndex = fadata.GetInteger("ExtConfigs", "MPSpawnStartIndex", 50);
+	ExtConfigs::SPChangeOwnerUseRulesAlso = fadata.GetBool("ExtConfigs", "SPChangeOwnerUseRulesAlso");
+	ExtConfigs::SPChangeOwnerExcludeStartWith = fadata.GetString("ExtConfigs", "SPChangeOwnerExcludeStartWith");
 }
 
 // DllMain

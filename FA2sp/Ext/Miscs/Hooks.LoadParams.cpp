@@ -5,6 +5,8 @@
 
 #include <unordered_set>
 
+#include "../../FA2sp.h"
+#include "../../Helpers/MultimapHelper.h"
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/ControlHelpers.h"
 
@@ -184,10 +186,42 @@ DEFINE_HOOK(438D3D, Miscs_LoadParams_SwitchCase, 9) //fs
     auto& fsdata = GlobalVars::INIFiles::FAData();
     std::map<ppmfc::CString, ppmfc::CString> collector;
     auto const pINI = INIClass::GetMapDocument(true);
+    auto& doc = GlobalVars::INIFiles::CurrentDocument();
     int i = 0;
 
     switch (pCaseNumber)
     {
+    case 1:
+        while (SendMessage(hComboBox, CB_GETCOUNT, 0, NULL) > 0)
+            SendMessage(hComboBox, CB_DELETESTRING, 0, 0);
+
+        {
+            MultimapHelper mmh;
+            bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
+            if (bMultiOnly)
+                mmh.AddINI(&GlobalVars::INIFiles::Rules());
+            else
+                mmh.AddINI(&doc);
+            auto& entries = mmh.ParseIndicies("Houses", true);
+            CString buffer;
+            for (size_t x = 0, sz = entries.size(); x < sz; ++x)
+            {
+                buffer.Format("%u - %s", x, entries[x]);
+                AddString(hComboBox, buffer);
+            }
+
+            if (bMultiOnly && ExtConfigs::UseMPSpawnHouses)
+            {
+                CString spawn;
+                for (int j = 0; j < 8 ; j++)
+                {
+                    spawn.Format("%u - Multiplayer %u", ExtConfigs::MPSpawnStartIndex + j, j + 1);
+                    AddString(hComboBox, spawn);
+                }
+            }
+        }
+        return 0x438F6B;
+
     case 21:
         while (SendMessage(hComboBox, CB_GETCOUNT, 0, NULL) > 0)
             SendMessage(hComboBox, CB_DELETESTRING, 0, 0);
@@ -240,7 +274,7 @@ DEFINE_HOOK(438D3D, Miscs_LoadParams_SwitchCase, 9) //fs
         while (SendMessage(hComboBox, CB_GETCOUNT, 0, NULL) > 0)
             SendMessage(hComboBox, CB_DELETESTRING, 0, 0);
 
-        if (auto entities = fsdata.GetSection("Weapons"))
+        if (auto entities = rules.GetSection("Weapons"))
         {
             CString text;
             i = 0;
@@ -270,6 +304,17 @@ DEFINE_HOOK(438D3D, Miscs_LoadParams_SwitchCase, 9) //fs
         AddString(hComboBox, "1 - Small");
         AddString(hComboBox, "2 - Medium");
         AddString(hComboBox, "3 - Large");
+        return 0x438F6B;
+
+    case 30:
+        while (SendMessage(hComboBox, CB_GETCOUNT, 0, NULL) > 0)
+            SendMessage(hComboBox, CB_DELETESTRING, 0, 0);
+        AddString(hComboBox, "0 - Generic Combat Event");
+        AddString(hComboBox, "1 - Generic Noncombat Event");
+        AddString(hComboBox, "2 - Dropzone Event");
+        AddString(hComboBox, "3 - Base Under Attack Event");
+        AddString(hComboBox, "4 - Harvester Under Attack Event");
+        AddString(hComboBox, "5 - Enemy Object Sensed Event");
         return 0x438F6B;
 
     }

@@ -160,25 +160,12 @@ void CTileManager::UpdateTypes(HWND hWnd)
     if (nTileCount <= 0)
         return;
 
-    INIClass* pTheaterINI = nullptr;
-    CString theater =
-        GlobalVars::INIFiles::CurrentDocument().GetString("Map", "Theater", "");
-    if (theater == "TEMPERATE")
-        pTheaterINI = &GlobalVars::INIFiles::Temperate();
-    else if (theater == "SNOW")
-        pTheaterINI = &GlobalVars::INIFiles::Snow();
-    else
-    {
-        Logger::Warn("No map was loaded or theater is invalid, [Map] Theater = %s\n.", theater);
-        return;
-    }
-
     CString tile;
     for (int idx = 0; idx < nTileCount; ++idx)
     {
         int nTile = SendMessage(hTileComboBox, CB_GETITEMDATA, idx, NULL);
         tile.Format("TileSet%04d", nTile);
-        tile = pTheaterINI->GetString(tile, "SetName", "NO NAME");
+        tile = GlobalVars::INIFiles::CurrentTheater->GetString(tile, "SetName", "NO NAME");
         bool other = true;
         if (STDHelpers::Contains(tile, "cliff", true))
             { CTileManager::Datas[Nodes_Cliff].push_back(idx); other = false; }
@@ -224,24 +211,12 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
         return;
     else
     {
-        INIClass* pTheaterINI = nullptr;
-        CString theater =
-            GlobalVars::INIFiles::CurrentDocument().GetString("Map", "Theater", "");
-        if (theater == "TEMPERATE")
-            pTheaterINI = &GlobalVars::INIFiles::Temperate();
-        else if (theater == "SNOW")
-            pTheaterINI = &GlobalVars::INIFiles::Snow();
-        else
-        {
-            Logger::Warn("No map was loaded or theater is invalid, [Map] Theater = %s\n.", theater);
-            return;
-        }
         CString text, buffer;
         for (auto& x : CTileManager::Datas[kNode])
         {
             int data = SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL);
             text.Format("TileSet%04d", data);
-            text = pTheaterINI->GetString(text, "SetName", "NO NAME");
+            text = GlobalVars::INIFiles::CurrentTheater->GetString(text, "SetName", "NO NAME");
             Translations::GetTranslationItem(text, text);
             buffer.Format("(%04d) %s", data, text);
             SendMessage(

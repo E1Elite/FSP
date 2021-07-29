@@ -2,6 +2,7 @@
 #include <GlobalVars.h>
 
 #include <MFC/ppmfc_include.h>
+#include "../../Helpers/STDHelpers.h"
 
 struct ColorTuple
 {
@@ -42,20 +43,19 @@ DEFINE_HOOK(46088E, sub_460530_RGBColor, 5) //fs
 
 	INIClass& rules = GlobalVars::INIFiles::Rules;
 
-	if (strlen(name) > 0) {
-		auto const pValue = rules.GetString("Colors", name);
-		ColorTuple hsv{};
-		if (sscanf_s(
-			pValue,
-			"%hhu,%hhu,%hhu",
-			&hsv.a, &hsv.b, &hsv.c) == 3
-			)
-		{
-			auto const rgb = HsvToRgb(hsv);
-			name.~CString();
-			R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
-			return 0x460B42; //fs
-		}
+	if (strlen(name) <= 0) 
+		name = "White";
+	auto pValue = rules.GetString("Colors", name);
+	if (STDHelpers::IsNullOrEmpty(pValue))
+		pValue = "0,0,255";
+	ColorTuple hsv{};
+	if (sscanf_s(pValue, "%hhu,%hhu,%hhu",
+		&hsv.a, &hsv.b, &hsv.c) == 3	)
+	{
+		auto const rgb = HsvToRgb(hsv);
+		name.~CString();
+		R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
+		return 0x460B42; //fs
 	}
 	return 0;
 }
