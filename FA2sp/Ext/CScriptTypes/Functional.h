@@ -35,18 +35,18 @@ static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    int waypoints[101];
+    int waypoints[702];
     memset(waypoints, -1, sizeof waypoints);
     if (auto entries = doc.GetSection("Waypoints"))
         for (auto& x : entries->EntitiesDictionary)
             if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
             {
                 int l = atoi(x.first);
-                if (l < 101 && l >= 0)
+                if (l < 702 && l >= 0)
                     waypoints[l] = atoi(x.second);
             }
     char buffer[0x20];
-    for (int i = 0; i < 101; ++i)
+    for (int i = 0; i < 702; ++i)
     {
         if (waypoints[i] >= 0)
         {
